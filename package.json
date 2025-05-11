@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "env-cmd nodemon ./src/index.js",
-    "test": "node ./src/index.js",
+    "test": "jest",
     "zip-for-aws": "node make-zip-for-aws.js"
   },
   "keywords": [],
@@ -20,11 +20,13 @@
     "express": "^4.16.4",
     "git-user-name": "^2.0.0",
     "helmet": "^3.15.1",
-    "mongodb": "^3.1.13",
+    "mongodb": "^6.16.0",
     "morgan": "^1.9.1",
     "zip-a-folder": "0.0.12"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "jest": "^29.7.0",
+    "nodemon": "^2.0.4",
+    "supertest": "^7.1.0"
   }
 }

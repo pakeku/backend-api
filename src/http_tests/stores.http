@@ -15,12 +15,12 @@ Content-Type: application/json
 
 ### Test the PUT which should change a store
 
-PUT http://localhost:3001/stores/5f2caef3b78cd6525812e063
+PUT http://localhost:3001/stores/6820ae08990eaee632a18472
 Content-Type: application/json
 
 {
-    "Store Profile": "Nevada Golf Emporium"
+    "metadata": "68203238d1857e2fae0b6093"
 }
 
 ### Test DELETE which should delete a store
-DELETE http://localhost:3001/stores/5f2caef3b78cd6525812e063
+DELETE http://localhost:3001/stores/6820ae08990eaee632a18472

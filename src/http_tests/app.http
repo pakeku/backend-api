@@ -1,0 +1,8 @@
+### Home page should redirect to /health
+GET http://localhost:3001
+
+### Get /health
+GET http://localhost:3001/health
+
+### Test a 404
+GET http://localhost:3001/testing-404

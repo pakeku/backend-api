@@ -1,54 +1,34 @@
-// This file is: ./src/index.js
+const app = require('./app.js');
+const { startDatabase } = require('./database/mongo-common.js');
 
-//importing the dependencies
-const {
-  app,
-  startDatabase
-} = require('./app-common.js');
-const { request } = require('express');
-
-// support production deployment on a port configured on the hosting server 
-// default to the dev port number otherwise
-const port = process.env.PORT || 3001;
-
+const PORT = process.env.PORT || 3001;
 const MONGO_URL = process.env.MONGO_URL;
 
-// connect to our database then start the web server
-// https://www.mongodb.com/
-if (MONGO_URL) {
-
-  // endpoint to return top level api
-  // much like a switch statement
-  app.get('/', async (req, res) => {
-    res.send({
-      message: "Storefront API. See documentation for use."
+async function startServer() {
+  if (!MONGO_URL) {
+    // Gracefully handle missing DB config
+    app.all('*', (req, res) => {
+      res.status(500).send({
+        message: 'MONGO_URL not configured. See documentation.',
+      });
     });
-  });
 
-  app.use('/products', require('./routes/productsRoutes'))
-  app.use('/logos', require('./routes/logosRoutes'))
-  app.use('/stores', require('./routes/storesRoutes'))
-  app.use('/categories', require('./routes/categoriesRoutes'))
-  app.use('/product-types', require('./routes/product-typesRoutes'))
-  app.use('/variations', require('./routes/variationsRoutes'))
-
-  startDatabase().then(async () => {
-    // `then` start the web server after the database starts
-    app.listen(port, async () => {
-      console.log(`Web server has started on port ${port}`);
+    app.listen(PORT, () => {
+      console.log(`Server running without DB on port ${PORT}`);
     });
-  });
-} else {
 
-  // endpoint to return top level api
-  // much like a switch statement
-  app.all('*', async (req, res) => {
-    res.send({
-      message: "MONGO_URL not configured. See documentation."
+    return;
+  }
+
+  try {
+    await startDatabase();
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
     });
-  });
-
-   app.listen(port, async () => {
-      console.log(`Web server has started on port ${port}`);
-  });
+  } catch (err) {
+    console.error('Failed to start database:', err);
+    process.exit(1); // Exit if DB connection fails
+  }
 }
+
+startServer();

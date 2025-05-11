@@ -15,16 +15,15 @@ router.post('/', async (apiRequest, apiResponse) => {
   });
 });
 
-router.delete('/:storeId', async (apiRequest, apiResponse) => {
-  await deleteStore(apiRequest.params.storeId);
-  apiResponse.send({ message: 'Store deleted.' });
+router.delete('/:_id', async (apiRequest, apiResponse) => {
+  apiResponse.send({ message: await deleteStore(apiRequest.params._id) });
 });
 
 // endpoint to update a Store
-router.put('/:storeId', async (apiRequest, apiResponse) => {
+router.put('/:_id', async (apiRequest, apiResponse) => {
   const updatedStore = apiRequest.body;
   console.log({ updateStore })
-  await updateStore(apiRequest.params.storeId, updatedStore);
+  await updateStore(apiRequest.params._id, updatedStore);
   apiResponse.send({ message: 'Store updated.' });
 });
 
