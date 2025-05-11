@@ -21,12 +21,12 @@ async function getStores() {
   return await database.collection(collectionName).find({}).toArray();
 }
 
-async function deleteStore(id) {
+async function deleteStore(_id) {
   const database = await getDatabase();
   // https://docs.mongodb.com/manual/reference/method/ObjectId/
   // for `deleteOne` info see  https://docs.mongodb.com/manual/reference/method/js-collection/
   await database.collection(collectionName).deleteOne({
-    _id: id,
+    _id,
   });
 }
 
