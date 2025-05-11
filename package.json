@@ -1,20 +1,23 @@
 {
-  "name": "week-10",
-  "version": "1.0.0",
+  "name": "backend-api",
+  "version": "1.0.1",
   "description": "",
   "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "env-cmd nodemon ./src/index.js",
-    "test": "jest",
-    "zip-for-aws": "node make-zip-for-aws.js"
+    "test": "jest"
   },
-  "keywords": [],
+  "keywords": [
+    "mongodb",
+    "express",
+    "api",
+    "rest"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "archiver": "^5.0.2",
-    "body-parser": "^1.18.3",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
