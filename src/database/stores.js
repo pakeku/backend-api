@@ -2,7 +2,7 @@ const { getDatabase } = require('./mongo-common');
 // https://docs.mongodb.com/manual/reference/method/ObjectId/
 const { ObjectId } = require('mongodb');
 
-const getUserName = require('git-user-name');
+const getUserName = require('../utils/git-user-name');
 
 // a "collection" in mongo is a lot like a list which is a lot like an Array
 const collectionName = 'stores';
