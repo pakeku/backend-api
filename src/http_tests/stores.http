@@ -9,8 +9,8 @@ POST http://localhost:3001/stores
 Content-Type: application/json
 
 {
-    "Store Profile": "Nevada Golf Emprium",
-    "Shipping Info": "99 Nowhere Drive, Nevada"
+    "store_profile": "Nevada Golf Emprium",
+    "shipping_address": "99 Nowhere Drive, Nevada"
 }
 
 ### Test the PUT which should change a store

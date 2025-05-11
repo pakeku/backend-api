@@ -1,59 +1,57 @@
 const { getDatabase } = require('./mongo-common');
-// https://docs.mongodb.com/manual/reference/method/ObjectId/
 const { ObjectId } = require('mongodb');
-
 const getUserName = require('../utils/git-user-name');
 
-// a "collection" in mongo is a lot like a list which is a lot like an Array
 const collectionName = 'stores';
 
 async function createStore(store) {
   const database = await getDatabase();
-  store.addedBy = getUserName()
-  // for `insertOne` info, see https://docs.mongodb.com/manual/reference/method/js-collection/
+  store.addedBy = getUserName();
+  
   const { insertedId } = await database.collection(collectionName).insertOne(store);
-  return insertedId;
+  
+  return await database.collection(collectionName).findOne({
+    _id: insertedId,
+  });
 }
 
 async function getStores() {
   const database = await getDatabase();
-  // `find` https://docs.mongodb.com/manual/reference/method/db.collection.find/#db.collection.find
   return await database.collection(collectionName).find({}).toArray();
 }
 
 async function deleteStore(_id) {
   const database = await getDatabase();
-  // https://docs.mongodb.com/manual/reference/method/ObjectId/
-  // for `deleteOne` info see  https://docs.mongodb.com/manual/reference/method/js-collection/
-  const restuls = await database.collection(collectionName).deleteOne({
-    _id: ObjectId.createFromHexString(_id),
+  
+  const result = await database.collection(collectionName).deleteOne({
+    _id: ObjectId.createFromHexString(_id), // Simplified ObjectId creation
   });
 
-  if (restuls.deletedCount === 0) {
-    return "No store found with that id";
+  if (result.deletedCount === 0) {
+    return { message: "No store found with that id" }; // Return an object with a message
   }
 
-  return "Store deleted";
+  return { message: "Store deleted" }; // Return an object with a message
 }
 
 async function updateStore(id, store) {
   const database = await getDatabase();
-
-  // `delete` is new to you. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete
   delete store._id;
 
-  // https://docs.mongodb.com/manual/reference/method/db.collection.update/
-  await database.collection(collectionName).update(
-    { _id: ObjectId.createFromHexString(id) },
+  await database.collection(collectionName).updateOne(
+    { _id: ObjectId.createFromHexString(id) }, // Simplified ObjectId creation
     {
       $set: {
         ...store,
       },
     },
   );
+
+  // Return the updated store
+  const updatedStore = await database.collection(collectionName).findOne({ _id: ObjectId.createFromHexString(id) });
+  return updatedStore;
 }
 
-// export the functions that can be used by the main app code
 module.exports = {
   createStore,
   getStores,
