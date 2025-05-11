@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
 
         const existingUser = await usersCollection.findOne({ email });
         if (existingUser) {
-            return res.status(409).json({ message: 'Username already taken' });
+            return res.status(409).json({ message: 'Email already taken' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
