@@ -7,7 +7,8 @@ let database = null;
 const mongoDBURL = process.env.MONGO_URL;
 
 async function startDatabase() {
-  const connection = await MongoClient.connect(mongoDBURL, { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(mongoDBURL);
+  const connection = await client.connect();
   database = connection.db();
 }
 
