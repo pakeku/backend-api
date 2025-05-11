@@ -1,6 +1,6 @@
-const {getDatabase} = require('./mongo-common');
+const { getDatabase } = require('./mongo-common');
 // https://docs.mongodb.com/manual/reference/method/ObjectId/
-const {ObjectID, ObjectId} = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const getUserName = require('git-user-name');
 
@@ -11,7 +11,7 @@ async function createStore(store) {
   const database = await getDatabase();
   store.addedBy = getUserName()
   // for `insertOne` info, see https://docs.mongodb.com/manual/reference/method/js-collection/
-  const {insertedId} = await database.collection(collectionName).insertOne(store);
+  const { insertedId } = await database.collection(collectionName).insertOne(store);
   return insertedId;
 }
 
@@ -25,9 +25,15 @@ async function deleteStore(_id) {
   const database = await getDatabase();
   // https://docs.mongodb.com/manual/reference/method/ObjectId/
   // for `deleteOne` info see  https://docs.mongodb.com/manual/reference/method/js-collection/
-  await database.collection(collectionName).deleteOne({
-    _id,
+  const restuls = await database.collection(collectionName).deleteOne({
+    _id: ObjectId.createFromHexString(_id),
   });
+
+  if (restuls.deletedCount === 0) {
+    return "No store found with that id";
+  }
+
+  return "Store deleted";
 }
 
 async function updateStore(id, store) {
@@ -38,7 +44,7 @@ async function updateStore(id, store) {
 
   // https://docs.mongodb.com/manual/reference/method/db.collection.update/
   await database.collection(collectionName).update(
-    { _id: id },
+    { _id: ObjectId.createFromHexString(id) },
     {
       $set: {
         ...store,

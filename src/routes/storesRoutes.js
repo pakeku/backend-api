@@ -16,8 +16,7 @@ router.post('/', async (apiRequest, apiResponse) => {
 });
 
 router.delete('/:_id', async (apiRequest, apiResponse) => {
-  await deleteStore(apiRequest.params._id);
-  apiResponse.send({ message: 'Store deleted.' });
+  apiResponse.send({ message: await deleteStore(apiRequest.params._id) });
 });
 
 // endpoint to update a Store

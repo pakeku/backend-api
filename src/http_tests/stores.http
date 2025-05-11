@@ -15,12 +15,12 @@ Content-Type: application/json
 
 ### Test the PUT which should change a store
 
-PUT http://localhost:3001/stores/68203238d1857e2fae0b6093
+PUT http://localhost:3001/stores/6820ae08990eaee632a18472
 Content-Type: application/json
 
 {
-    "metadata": "68203238d1857e2fae0b6093",
+    "metadata": "68203238d1857e2fae0b6093"
 }
 
 ### Test DELETE which should delete a store
-DELETE http://localhost:3001/stores/68203238d1857e2fae0b6093
+DELETE http://localhost:3001/stores/6820ae08990eaee632a18472
