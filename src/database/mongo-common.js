@@ -4,23 +4,41 @@
  */
 
 const { MongoClient } = require('mongodb');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const mongoDBURL = process.env.MONGO_URL;
 
-if (!mongoDBURL) {
+if (!mongoDBURL && process.env.NODE_ENV !== 'test') {
   throw new Error('MONGO_URL environment variable is not set');
 }
 
 let client;
 let database;
+let mongoServer; // store reference to in-memory server for shutdown
 
-async function startDatabase() {
-  if (client && client.topology?.isConnected?.()) {
-    return database; // already connected
+const getRightMongoDBURL = async () => {
+  const env = process.env.NODE_ENV;
+
+  if (env === 'test') {
+    mongoServer = await MongoMemoryServer.create();
+    return mongoServer.getUri();
   }
 
-  client = new MongoClient(mongoDBURL);
+  if (['development' ,'production'].includes(env)) {
+    return mongoDBURL;
+  }
 
+  throw new Error(`Unsupported NODE_ENV: ${env}`);
+};
+
+async function startDatabase(uri = null) {
+  if (client && client.topology?.isConnected?.()) {
+    return database;
+  }
+
+  const dbURI = uri || await getRightMongoDBURL();
+
+  client = new MongoClient(dbURI);
   await client.connect();
   database = client.db();
   return database;
@@ -35,6 +53,11 @@ async function stopDatabase() {
     await client.close();
     client = null;
     database = null;
+  }
+
+  if (mongoServer) {
+    await mongoServer.stop();
+    mongoServer = null;
   }
 }
 
