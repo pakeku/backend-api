@@ -16,6 +16,10 @@ const healthRouter = require('./routes/healthRoute')
 const storesRouter = require('./routes/storesRoutes');
 const rootRouter = require('./routes/rootRoute');
 
+// Disable Express identifying header
+// SNYK CODE: CWE-200
+app.disable('x-powered-by');
+
 // Apply Middleware
 app.use(helmet);
 app.use(json);
