@@ -1,5 +1,5 @@
 # Node.js and Express Backend
-[![Node.js CI](https://github.com/pakeku/backend-api/actions/workflows/tests.yml/badge.svg)](https://github.com/pakeku/backend-api/actions/workflows/tests.yml)
+[![Backend API - CI Tests](https://github.com/pakeku/backend-api/actions/workflows/tests.yml/badge.svg)](https://github.com/pakeku/backend-api/actions/workflows/tests.yml)
 
 ## Requirements
 Identify your MongoDB URL. Visit MongoDB to sign up and get started.
