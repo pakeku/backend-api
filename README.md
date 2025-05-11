@@ -8,13 +8,16 @@ Environmental Variables:
 2. PORT (optional)
 
 ## Getting Started
+1. Copy this file to .env and fill in the actual values
+```bash 
+cp .env.sample .env
+```
 
-Scripts:
+2. Run a script:
 ```json 
 "scripts": {
     "start": "node ./src/index.js",
     "dev": "env-cmd nodemon ./src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "zip-for-aws": "node make-zip-for-aws.js"
-  },
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 ```
