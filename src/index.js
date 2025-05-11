@@ -1,4 +1,4 @@
-const { app } = require('./app.js');
+const app = require('./app.js');
 const { startDatabase } = require('./database/mongo-common.js');
 
 const PORT = process.env.PORT || 3001;
