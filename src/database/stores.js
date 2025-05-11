@@ -1,6 +1,6 @@
 const {getDatabase} = require('./mongo-common');
 // https://docs.mongodb.com/manual/reference/method/ObjectId/
-const {ObjectID} = require('mongodb');
+const {ObjectID, ObjectId} = require('mongodb');
 
 const getUserName = require('git-user-name');
 
@@ -26,7 +26,7 @@ async function deleteStore(id) {
   // https://docs.mongodb.com/manual/reference/method/ObjectId/
   // for `deleteOne` info see  https://docs.mongodb.com/manual/reference/method/js-collection/
   await database.collection(collectionName).deleteOne({
-    _id: new ObjectID(id),
+    _id: id,
   });
 }
 
@@ -38,7 +38,7 @@ async function updateStore(id, store) {
 
   // https://docs.mongodb.com/manual/reference/method/db.collection.update/
   await database.collection(collectionName).update(
-    { _id: new ObjectID(id), },
+    { _id: id },
     {
       $set: {
         ...store,

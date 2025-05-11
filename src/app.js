@@ -3,35 +3,23 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const errorHandler = require('./midleware/errorHandler');
+const notFoundRouter = require('./routes/notFoundRoute')
+const healthRouter = require('./routes/healthRoute')
+const storesRouter = require('./routes/storesRoutes');
+const rootRouter = require('./routes/rootRoute');
+
 const app = express();
 
 app.use(helmet());
 app.use(express.json());
 app.use(cors());
 app.use(morgan('combined'));
+app.use(errorHandler);
 
-// Redirect root to /health
-app.get('/', (req, res) => {
-  res.redirect('/health');
-});
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
-
-// Routes
-app.use('/stores', require('./routes/storesRoutes'));
-
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Route not found' });
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send({ message: 'Internal Server Error' });
-});
+app.use('/', rootRouter);
+app.use('/health', healthRouter);
+app.use('/stores', storesRouter);
+app.use('*', notFoundRouter);
 
 module.exports = app;
