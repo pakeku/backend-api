@@ -1,4 +1,5 @@
 # Node.js and Express Backend
+[![Node.js CI](https://github.com/pakeku/backend-api/actions/workflows/tests.yml/badge.svg)](https://github.com/pakeku/backend-api/actions/workflows/tests.yml)
 
 ## Requirements
 Identify your MongoDB URL. Visit MongoDB to sign up and get started.
@@ -18,6 +19,6 @@ cp .env.sample .env
 "scripts": {
     "start": "node ./src/index.js",
     "dev": "env-cmd nodemon ./src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   }
 ```
