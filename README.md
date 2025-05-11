@@ -7,6 +7,9 @@ Identify your MongoDB URL. Visit MongoDB to sign up and get started.
 Environmental Variables:
 1. MONGO_URL
 2. PORT (optional)
+3. ALLOWED_ORIGINS (optional)
+4. ALLOWED_METHODS (optional)
+5. ALLOWED_HEADERS (optional)
 
 ## Getting Started
 1. Copy this file to .env and fill in the actual values
@@ -14,7 +17,7 @@ Environmental Variables:
 cp .env.sample .env
 ```
 
-2. Run a script:
+1. Run a script:
 ```json 
 "scripts": {
     "start": "node ./src/index.js",
