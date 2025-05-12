@@ -1,12 +1,14 @@
-const app = require('./app.js');
-const { startDatabase, stopDatabase } = require('./database/mongo-common.js');
+// src/server.ts
+import app from './app';
+import { startDatabase, stopDatabase } from './database/mongo-common';
+import { Server } from 'http';
 
-const PORT = process.env.PORT || 3001;
-const MONGO_URL = process.env.MONGO_URL;
+const PORT: number = parseInt(process.env.PORT || '3001', 10);
+const MONGO_URL: string | undefined = process.env.MONGO_URL;
 
-let server;
+let server: Server | undefined;
 
-async function startServer() {
+async function startServer(): Promise<void> {
   if (!MONGO_URL) {
     // Gracefully handle missing DB config
     app.all('*', (req, res) => {
@@ -34,7 +36,7 @@ async function startServer() {
   }
 }
 
-function gracefulShutdown(signal) {
+function gracefulShutdown(signal: string): void {
   console.log(`\nReceived ${signal}, shutting down...`);
   if (server) {
     server.close(async () => {
@@ -48,7 +50,6 @@ function gracefulShutdown(signal) {
   }
 }
 
-// Listen for shutdown signals
 ['SIGINT', 'SIGTERM'].forEach(signal => {
   process.on(signal, () => gracefulShutdown(signal));
 });

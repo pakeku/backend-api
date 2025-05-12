@@ -1,6 +1,6 @@
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
-function getGitUserName() {
+function getGitUserName(): string {
     try {
         const name = execSync('git config --get user.name', { encoding: 'utf8' }).trim();
         return name || 'unknown';
@@ -9,4 +9,4 @@ function getGitUserName() {
     }
 }
 
-module.exports = getGitUserName;
+export default getGitUserName;

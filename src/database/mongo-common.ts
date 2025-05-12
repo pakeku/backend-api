@@ -3,8 +3,8 @@
  * Documentation: https://mongodb.github.io/node-mongodb-native/6.16/classes/MongoClient.html
  */
 
-const { MongoClient } = require('mongodb');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+import { MongoClient, Db } from 'mongodb';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const mongoDBURL = process.env.MONGO_URL;
 
@@ -12,11 +12,11 @@ if (!mongoDBURL && process.env.NODE_ENV !== 'test') {
   throw new Error('MONGO_URL environment variable is not set');
 }
 
-let client;
-let database;
-let mongoServer; // store reference to in-memory server for shutdown
+let client: MongoClient | null = null;
+let database: Db | null = null;
+let mongoServer: MongoMemoryServer | null = null; // store reference to in-memory server for shutdown
 
-const getRightMongoDBURL = async () => {
+const getRightMongoDBURL = async (): Promise<string> => {
   const env = process.env.NODE_ENV;
 
   if (env === 'test') {
@@ -24,15 +24,15 @@ const getRightMongoDBURL = async () => {
     return mongoServer.getUri();
   }
 
-  if (['development' ,'production'].includes(env)) {
-    return mongoDBURL;
+  if (['development', 'production'].includes(env || '')) {
+    return mongoDBURL as string;
   }
 
   throw new Error(`Unsupported NODE_ENV: ${env}`);
 };
 
-async function startDatabase(uri = null) {
-  if (client && client.topology?.isConnected?.()) {
+export async function startDatabase(uri: string | null = null): Promise<Db> {
+  if (client && database) {
     return database;
   }
 
@@ -44,11 +44,12 @@ async function startDatabase(uri = null) {
   return database;
 }
 
-async function getDatabase() {
-  return database || startDatabase();
+
+export async function getDatabase(): Promise<Db> {
+  return database || await startDatabase();
 }
 
-async function stopDatabase() {
+export async function stopDatabase(): Promise<void> {
   if (client) {
     await client.close();
     client = null;
@@ -60,9 +61,3 @@ async function stopDatabase() {
     mongoServer = null;
   }
 }
-
-module.exports = {
-  getDatabase,
-  startDatabase,
-  stopDatabase,
-};

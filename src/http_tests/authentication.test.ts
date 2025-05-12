@@ -1,8 +1,7 @@
-require('dotenv').config();
-
-const request = require('supertest');
-const app = require('../app');
-const { stopDatabase } = require('../database/mongo-common');
+import 'dotenv/config';
+import request from 'supertest';
+import app from '../app'; // Adjust the path as necessary
+import { stopDatabase } from '../database/mongo-common';
 
 describe('Authentication JWT', () => {
     afterAll(async () => {
