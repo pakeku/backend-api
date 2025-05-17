@@ -18,8 +18,8 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
     return;
   }
 
-  jwt.verify(token, JWT_SECRET, (err, payload) => {
-    if (err && !payload) {
+  jwt.verify(token, JWT_SECRET, err => {
+    if (err) {
       res.status(401).json({ message: 'Invalid or expired token' });
       return;
     }
