@@ -5,7 +5,11 @@ import { ObjectId } from 'mongodb';
 import { getDatabase } from '../database/mongo-common';
 
 const router: Router = Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET is not defined');
+}
 
 interface User {
   _id?: ObjectId;
