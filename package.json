@@ -11,6 +11,7 @@
     "dev": "env-cmd ts-node src/index.ts",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "lint:check": "eslint . --ext .ts --no-ignore",

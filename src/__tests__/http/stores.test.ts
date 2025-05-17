@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import request, { Response } from 'supertest';
 
-import app from '../app'; // Adjust the path as necessary
-import { stopDatabase } from '../database/mongo-common';
+import app from '../../app'; // Adjust the path as necessary
+import { stopDatabase } from '../../database/mongo-common';
 
 interface Store {
   _id?: string; // Optionally include the ID in responses
