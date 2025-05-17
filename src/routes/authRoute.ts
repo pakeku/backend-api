@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
 
 import { getDatabase } from '../database/mongo-common';
+import authMiddleware from '../midleware/authMiddleware';
 
 const router: Router = Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -80,7 +81,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 });
 
 // responds with user data
-router.get('/me', async (req: Request, res: Response): Promise<void> => {
+router.get('/me', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
