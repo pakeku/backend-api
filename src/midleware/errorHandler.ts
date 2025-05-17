@@ -1,7 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => {
-  console.error(`[ERROR] ${err.stack}`);
+// using _ to indicate that the parameter is not used
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
+  console.error(`[ERROR] ${err.stack ?? 'No stack trace available'}`);
 
   const response = {
     message: 'Internal Server Error',

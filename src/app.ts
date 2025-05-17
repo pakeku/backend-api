@@ -1,18 +1,17 @@
 import express, { Application } from 'express';
 
-import errorHandler from './midleware/errorHandler';
-import rateLimiter from './midleware/rateLimiter';
 import compression from './midleware/compression';
+import cors from './midleware/cors';
+import errorHandler from './midleware/errorHandler';
 import helmet from './midleware/helmet';
 import json from './midleware/json';
-import cors from './midleware/cors';
 import morgan from './midleware/morgan';
-
-import notFoundRouter from './routes/notFoundRoute';
-import healthRouter from './routes/healthRoute';
-import storesRouter from './routes/storesRoute';
-import rootRouter from './routes/rootRoute';
+import rateLimiter from './midleware/rateLimiter';
 import authRouter from './routes/authRoute';
+import healthRouter from './routes/healthRoute';
+import notFoundRouter from './routes/notFoundRoute';
+import rootRouter from './routes/rootRoute';
+import storesRouter from './routes/storesRoute';
 
 const app: Application = express();
 

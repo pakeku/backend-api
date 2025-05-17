@@ -10,4 +10,4 @@ function getGitUserName(): string {
   }
 }
 
-export default getGitUserName;
+export default getGitUserName 

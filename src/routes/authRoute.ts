@@ -1,7 +1,8 @@
-import { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
+import { Request, Response, Router } from 'express';
 import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
+
 import { getDatabase } from '../database/mongo-common';
 
 const router: Router = Router();
@@ -19,7 +20,7 @@ interface User {
 
 // Register endpoint
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body;
+  const { email, password } = req.body as User;
 
   if (!email || !password) {
     res.status(400).json({ message: 'Email and password are required' });
@@ -50,7 +51,7 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
 
 // Login endpoint
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body;
+  const { email, password } = req.body as User;
 
   try {
     const db = await getDatabase();
@@ -67,7 +68,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, {
+    const token = jwt.sign({ email: user.email, userId: user._id }, JWT_SECRET, {
       expiresIn: '1h',
     });
 
@@ -88,7 +89,7 @@ router.get('/me', async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string; email: string };
+    const decoded = jwt.verify(token, JWT_SECRET) as { email: string; userId: string };
     const db = await getDatabase();
     const usersCollection = db.collection<User>('users');
 
@@ -104,6 +105,6 @@ router.get('/me', async (req: Request, res: Response): Promise<void> => {
     console.error('Error fetching user data:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
-})
+});
 
 export default router;
