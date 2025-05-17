@@ -5,6 +5,7 @@
 [![code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat&logo=prettier)](https://prettier.io/)
 [![ESLint](https://img.shields.io/badge/linting-eslint-blue.svg?style=flat&logo=eslint)](https://eslint.org/)
 [![TypeScript](https://img.shields.io/badge/language-typescript-blue.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Swagger UI](https://img.shields.io/badge/docs-Swagger_UI-blue?logo=swagger)](http://localhost:3000/api-docs)
 
 ## Configuration
 

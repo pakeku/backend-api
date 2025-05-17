@@ -12,6 +12,8 @@ import healthRouter from './routes/healthRoute';
 import notFoundRouter from './routes/notFoundRoute';
 import rootRouter from './routes/rootRoute';
 import storesRouter from './routes/storesRoute';
+import swaggerSpec from './documentation/swaggerOptions';
+import swaggerUi from 'swagger-ui-express';
 
 const app: Application = express();
 
@@ -32,6 +34,7 @@ app.use('/', rootRouter);
 app.use('/health', healthRouter);
 app.use('/stores', storesRouter);
 app.use('/auth', authRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('*', notFoundRouter);
 
 export default app;
