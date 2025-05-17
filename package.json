@@ -4,7 +4,6 @@
   "description": "",
   "main": "./src/index.ts",
   "private": true,
-  "type": "module",
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc",
