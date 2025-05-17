@@ -31,4 +31,20 @@ describe('Authentication JWT', () => {
         expect(res.body).toHaveProperty('token');
         expect(typeof res.body.token).toBe('string');
     });
+
+    it('should return user profile with valid token', async () => {
+        const loginRes = await request(app)
+            .post('/auth/login')
+            .send(testUser)
+            .expect(200);
+
+        const token = loginRes.body.token;
+
+        const res = await request(app)
+            .get('/auth/me')
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200);
+
+        expect(res.body).toHaveProperty('email', testUser.email);
+    })
 });
