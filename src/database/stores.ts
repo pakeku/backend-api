@@ -5,7 +5,7 @@ import { getDatabase } from './mongo-common';
 
 // Define the Store interface
 export interface Store {
-  _id?: ObjectId;
+  _id: ObjectId;
   addedBy?: string;
   metadata?: string;
   name: string;
@@ -45,7 +45,7 @@ async function getStores(): Promise<Store[]> {
   const database = await getDatabase();
   const stores = await database.collection<Store>(collectionName).find({}).toArray();
   return stores.map(store => ({
-    _id: new ObjectId(store._id),
+    _id: store._id,
     addedBy: store.addedBy,
     name: store.name,
   }));
