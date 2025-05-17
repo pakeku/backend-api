@@ -32,15 +32,14 @@ function gracefulShutdown(signal: string): void {
 
 async function startServer(): Promise<void> {
   if (!MONGO_URL) {
-    // Gracefully handle missing DB config
-    app.all('*', (req, res) => {
+    app.all('*', (_, res) => {
       res.status(500).send({
         message: 'MONGO_URL not configured. See documentation.',
       });
     });
 
     server = app.listen(PORT, () => {
-      console.log(`Server running without DB on port ${PORT.toString()}`);
+      console.log(`Server running without DB on port ${String(PORT)}`);
     });
 
     return;
@@ -50,7 +49,7 @@ async function startServer(): Promise<void> {
     await startDatabase();
 
     server = app.listen(PORT, () => {
-      console.log(`Server started on port ${PORT.toString()}`);
+      console.log(`Server started on port ${String(PORT)}`);
     });
   } catch (err: unknown) {
     console.error('Failed to start database:', err);

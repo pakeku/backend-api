@@ -18,7 +18,7 @@ async function createStore(store: Store): Promise<null | Store> {
   const database = await getDatabase();
   store.addedBy = getUserName();
 
-  const storeToInsert = { ...store, _id: store._id ? new ObjectId(store._id) : undefined };
+  const storeToInsert = { ...store, _id: store._id };
   const { insertedId } = await database.collection(collectionName).insertOne(storeToInsert);
 
   // Return the store document with the inserted _id

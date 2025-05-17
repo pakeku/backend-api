@@ -14,7 +14,7 @@ Environmental Variables:
 3. ALLOWED_ORIGINS (optional)
 4. ALLOWED_METHODS (optional)
 5. ALLOWED_HEADERS (optional)
-6. NODE\*ENV=test --- When set to \*\*\*"test"\_\*\*, a `mongodb-memory-server` test URI is used, and no `MONGO_URL` is required. This allows for out-of-the-box testing without a live database.
+6. NODE_ENV=test --- When set to "test", a `mongodb-memory-server` test URI is used, and no `MONGO_URL` is required. This allows for out-of-the-box testing without a live database.
 7. JWT_SECRET --- A cryptographically secure secret used to sign and verify JSON Web Tokens (JWTs). This is required for authentication to work correctly.
    Use a long, random string—at least 32 characters, ideally generated using a password manager or Node.js: `bash node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`
 8.
