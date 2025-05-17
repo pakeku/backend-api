@@ -1,4 +1,5 @@
 // src/server.ts
+import 'dotenv/config';
 import app from './app';
 import { startDatabase, stopDatabase } from './database/mongo-common';
 import { Server } from 'http';

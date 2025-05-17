@@ -3,12 +3,13 @@
   "version": "1.0.1",
   "description": "",
   "main": "./src/index.ts",
-  "type": "module",
   "scripts": {
+    "prebuild": "rm -rf dist",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "env-cmd ts-node --esm src/index.ts",
-    "test": "jest"
+    "dev": "env-cmd ts-node src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "mongodb",

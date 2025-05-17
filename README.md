@@ -25,8 +25,11 @@ cp .env.sample .env
 1. Run a script:
 ```json 
 "scripts": {
+    "prebuild":"rm -rf dist",
+    "build":"tsc",
     "start": "node ./src/index.js",
-    "dev": "env-cmd nodemon ./src/index.js",
-    "test": "jest"
+    "dev": "env-cmd nodemon ./src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
   }
 ```
