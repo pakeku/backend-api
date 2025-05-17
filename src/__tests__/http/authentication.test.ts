@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import request, { Response } from 'supertest';
 
-import app from '../app';
-import { stopDatabase } from '../database/mongo-common';
+import app from '../../app';
+import { stopDatabase } from '../../database/mongo-common';
 
 // Define expected response shapes
 interface AuthResponse {

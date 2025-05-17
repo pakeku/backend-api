@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import request, { Response } from 'supertest';
 
-import app from '../app';
+import app from '../../app';
 
 interface ResponseBody {
   message?: string;
