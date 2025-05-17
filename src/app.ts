@@ -1,5 +1,7 @@
 import express, { Application } from 'express';
+import swaggerUi from 'swagger-ui-express';
 
+import swaggerSpec from './documentation/swaggerOptions';
 import compression from './midleware/compression';
 import cors from './midleware/cors';
 import errorHandler from './midleware/errorHandler';
@@ -32,6 +34,7 @@ app.use('/', rootRouter);
 app.use('/health', healthRouter);
 app.use('/stores', storesRouter);
 app.use('/auth', authRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('*', notFoundRouter);
 
 export default app;

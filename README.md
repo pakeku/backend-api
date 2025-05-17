@@ -5,42 +5,38 @@
 [![code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat&logo=prettier)](https://prettier.io/)
 [![ESLint](https://img.shields.io/badge/linting-eslint-blue.svg?style=flat&logo=eslint)](https://eslint.org/)
 [![TypeScript](https://img.shields.io/badge/language-typescript-blue.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Swagger UI](https://img.shields.io/badge/docs-Swagger_UI-blue?logo=swagger)](http://localhost:3000/api-docs)
 
 ## Configuration
 
-This backend API is configured using environment variables. You can set these variables in a `.env` file in the root of the project (copy `.env.sample` to `.env` and modify the values). **Important: Ensure your `.env` file is not committed to your version control system.**
+You can define your environmental variables in a `.env` file at the root of the project. (Start by copying `.env.sample` → `.env`).\
+**⚠️ Important:** Never commit your `.env` file to version control.
 
-The following environment variables are used:
-
-- `MONGO_URL`: **Required.** The connection string for your MongoDB database. You can obtain this from your MongoDB provider (e.g., MongoDB Atlas). Example: `mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority`
-- `PORT`: **Optional.** The port number that the Express server will listen on. If not specified, it defaults to `3000`. Example: `8080`
-- `ALLOWED_ORIGINS`: **Optional.** A comma-separated list of allowed origins for Cross-Origin Resource Sharing (CORS). This controls which websites can make requests to your API. Example: `http://localhost:3000,https://your-frontend.com`
-- `ALLOWED_METHODS`: **Optional.** A comma-separated list of allowed HTTP methods for CORS. Example: `GET,POST,PUT,DELETE`
-- `ALLOWED_HEADERS`: **Optional.** A comma-separated list of allowed request headers for CORS. Example: `Content-Type,Authorization`
-- `NODE_ENV`: Specifies the application environment.
-  - `test`: When set to `test`, the application will use an in-memory MongoDB server provided by `mongodb-memory-server` for testing purposes. In this mode, the `MONGO_URL` variable is not required.
-  - `development`: Typically used during development. You might have specific development configurations.
-  - `production`: Used in the production environment.
-- `JWT_SECRET`: **Required and Critically Important.** A secret key used to sign and verify JSON Web Tokens (JWTs) for authentication. **This should be a long, random, and secure string. Do not share or expose this secret.**
-  ```bash
-  node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-  ```
+| Variable          | Required   | Description                                                                                          | Example                                                                                         |
+| ----------------- | ---------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `MONGO_URL`       | ✅ Yes     | Connection string for MongoDB. Obtain this from your MongoDB provider.                               | `mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority` |
+| `PORT`            | ❌ No      | Port for the Express server to listen on. Defaults to `3000`.                                        | `8080`                                                                                          |
+| `ALLOWED_ORIGINS` | ❌ No      | Comma-separated list of allowed origins for CORS.                                                    | `http://localhost:3000,https://your-frontend.com`                                               |
+| `ALLOWED_METHODS` | ❌ No      | Comma-separated list of allowed HTTP methods for CORS.                                               | `GET,POST,PUT,DELETE`                                                                           |
+| `ALLOWED_HEADERS` | ❌ No      | Comma-separated list of allowed request headers for CORS.                                            | `Content-Type,Authorization`                                                                    |
+| `NODE_ENV`        | ⚠️ Depends | Application environment: `development`, `production`, or `test`. `MONGO_URL` not required in `test`. | `development`                                                                                   |
+| `JWT_SECRET`      | ✅ Yes     | Secret key used for signing/verifying JWTs. Must be secure and private.                              | `Use: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`                 |
 
 ## Getting Started
 
-Copy this file to .env and fill in the actual values
-
-```bash
-cp .env.sample .env
-```
-
-Install Dependencies
+1. Install Dependencies
 
 ```bash
 npm run install
 ```
 
-Run a script:
+2. Create .env file and gather your variable values.
+
+```bash
+cp .env.sample .env
+```
+
+3. Run script:
 
 ```json
 "scripts": {
