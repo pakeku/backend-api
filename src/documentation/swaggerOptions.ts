@@ -1,16 +1,17 @@
 import swaggerJsdoc, { Options } from 'swagger-jsdoc';
+
 import { name } from '../../package.json';
 
 const options: Options = {
+  apis: ['./src/**/*.ts'], // recursive, includes subfolders like ./src/routes
   definition: {
-    openapi: '3.0.0',
     info: {
+      description: 'A sample API documentation',
       title: name,
       version: '1.0.0',
-      description: 'A sample API documentation',
     },
+    openapi: '3.0.0',
   },
-  apis: ['./src/**/*.ts'], // recursive, includes subfolders like ./src/routes
 };
 
 const swaggerSpec = swaggerJsdoc(options);

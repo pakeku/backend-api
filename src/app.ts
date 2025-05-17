@@ -1,5 +1,7 @@
 import express, { Application } from 'express';
+import swaggerUi from 'swagger-ui-express';
 
+import swaggerSpec from './documentation/swaggerOptions';
 import compression from './midleware/compression';
 import cors from './midleware/cors';
 import errorHandler from './midleware/errorHandler';
@@ -12,8 +14,6 @@ import healthRouter from './routes/healthRoute';
 import notFoundRouter from './routes/notFoundRoute';
 import rootRouter from './routes/rootRoute';
 import storesRouter from './routes/storesRoute';
-import swaggerSpec from './documentation/swaggerOptions';
-import swaggerUi from 'swagger-ui-express';
 
 const app: Application = express();
 

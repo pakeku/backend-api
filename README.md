@@ -8,31 +8,36 @@
 [![Swagger UI](https://img.shields.io/badge/docs-Swagger_UI-blue?logo=swagger)](http://localhost:3000/api-docs)
 
 ## Configuration
+
 You can define your environmental variables in a `.env` file at the root of the project. (Start by copying `.env.sample` → `.env`).\
 **⚠️ Important:** Never commit your `.env` file to version control.
 
-| Variable | Required | Description | Example |
-| --- | --- | --- | --- |
-| `MONGO_URL` | ✅ Yes | Connection string for MongoDB. Obtain this from your MongoDB provider. | `mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority` |
-| `PORT` | ❌ No | Port for the Express server to listen on. Defaults to `3000`. | `8080` |
-| `ALLOWED_ORIGINS` | ❌ No | Comma-separated list of allowed origins for CORS. | `http://localhost:3000,https://your-frontend.com` |
-| `ALLOWED_METHODS` | ❌ No | Comma-separated list of allowed HTTP methods for CORS. | `GET,POST,PUT,DELETE` |
-| `ALLOWED_HEADERS` | ❌ No | Comma-separated list of allowed request headers for CORS. | `Content-Type,Authorization` |
-| `NODE_ENV` | ⚠️ Depends | Application environment: `development`, `production`, or `test`. `MONGO_URL` not required in `test`. | `development` |
-| `JWT_SECRET` | ✅ Yes | Secret key used for signing/verifying JWTs. Must be secure and private. | `Use: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"` |
+| Variable          | Required   | Description                                                                                          | Example                                                                                         |
+| ----------------- | ---------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `MONGO_URL`       | ✅ Yes     | Connection string for MongoDB. Obtain this from your MongoDB provider.                               | `mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority` |
+| `PORT`            | ❌ No      | Port for the Express server to listen on. Defaults to `3000`.                                        | `8080`                                                                                          |
+| `ALLOWED_ORIGINS` | ❌ No      | Comma-separated list of allowed origins for CORS.                                                    | `http://localhost:3000,https://your-frontend.com`                                               |
+| `ALLOWED_METHODS` | ❌ No      | Comma-separated list of allowed HTTP methods for CORS.                                               | `GET,POST,PUT,DELETE`                                                                           |
+| `ALLOWED_HEADERS` | ❌ No      | Comma-separated list of allowed request headers for CORS.                                            | `Content-Type,Authorization`                                                                    |
+| `NODE_ENV`        | ⚠️ Depends | Application environment: `development`, `production`, or `test`. `MONGO_URL` not required in `test`. | `development`                                                                                   |
+| `JWT_SECRET`      | ✅ Yes     | Secret key used for signing/verifying JWTs. Must be secure and private.                              | `Use: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`                 |
 
 ## Getting Started
-1. Install Dependencies 
+
+1. Install Dependencies
+
 ```bash
 npm run install
 ```
 
 2. Create .env file and gather your variable values.
+
 ```bash
 cp .env.sample .env
 ```
 
 3. Run script:
+
 ```json
 "scripts": {
     "prebuild":"rm -rf dist",
