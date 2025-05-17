@@ -29,6 +29,10 @@ jobs:
     # Ensure consistent installs with npm ci
     - name: Run npm ci (ensure clean node_modules)
       run: npm ci
+    
+    # Generate JWT secret key for testing
+    - name: Generate JWT_SECRET and save to .env
+      run: echo "JWT_SECRET=$(node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\")" >> .env
 
     - name: Run tests
       run: npm test
