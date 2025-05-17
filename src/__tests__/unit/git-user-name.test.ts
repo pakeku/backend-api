@@ -30,7 +30,9 @@ describe('getGitUserName', () => {
   });
 
   it('returns "unknown" if execSync throws', () => {
-    (execSync as jest.Mock).mockImplementation(() => { throw new Error('fail'); });
+    (execSync as jest.Mock).mockImplementation(() => {
+      throw new Error('fail');
+    });
     expect(getGitUserName()).toBe('unknown');
   });
 });
