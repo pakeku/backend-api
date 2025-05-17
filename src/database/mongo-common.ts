@@ -3,7 +3,7 @@
  * Documentation: https://mongodb.github.io/node-mongodb-native/6.16/classes/MongoClient.html
  */
 
-import { MongoClient, Db } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const mongoDBURL = process.env.MONGO_URL;
@@ -17,36 +17,36 @@ let database: Db | null = null;
 let mongoServer: MongoMemoryServer | null = null; // store reference to in-memory server for shutdown
 
 const getRightMongoDBURL = async (): Promise<string> => {
-  const env = process.env.NODE_ENV;
+  const env = process.env.NODE_ENV ?? 'development';
 
   if (env === 'test') {
     mongoServer = await MongoMemoryServer.create();
     return mongoServer.getUri();
   }
 
-  if (['development', 'production'].includes(env || '')) {
-    return mongoDBURL as string;
+  if (['development', 'production'].includes(env)) {
+    if (!mongoDBURL) throw new Error('MONGO_URL is not defined');
+    return mongoDBURL;
   }
 
   throw new Error(`Unsupported NODE_ENV: ${env}`);
 };
 
-export async function startDatabase(uri: string | null = null): Promise<Db> {
+export async function getDatabase(): Promise<Db> {
+  return database ?? (await startDatabase());
+}
+
+export async function startDatabase(uri: null | string = null): Promise<Db> {
   if (client && database) {
     return database;
   }
 
-  const dbURI = uri || await getRightMongoDBURL();
+  const dbURI = uri ?? (await getRightMongoDBURL());
 
   client = new MongoClient(dbURI);
   await client.connect();
   database = client.db();
   return database;
-}
-
-
-export async function getDatabase(): Promise<Db> {
-  return database || await startDatabase();
 }
 
 export async function stopDatabase(): Promise<void> {

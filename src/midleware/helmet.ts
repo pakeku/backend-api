@@ -1,18 +1,18 @@
+import { RequestHandler } from 'express';
 import helmet from 'helmet';
-import { RequestHandler } from 'express'; 
 
 const configureHelmet = (): RequestHandler => // Explicitly type as RequestHandler
   helmet({
     contentSecurityPolicy: false,
-    referrerPolicy: { policy: 'no-referrer' },
     expectCt: false,
     hidePoweredBy: true,
     hsts: {
-      maxAge: 63072000, // 2 years
       includeSubDomains: true,
-      preload: true, 
+      maxAge: 63072000, // 2 years
+      preload: true,
     },
     noSniff: true,
+    referrerPolicy: { policy: 'no-referrer' },
   });
 
 export default configureHelmet();

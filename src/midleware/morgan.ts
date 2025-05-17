@@ -1,4 +1,4 @@
-import morgan, { StreamOptions } from 'morgan';
+import morgan from 'morgan';
 
 // Morgan configuration
 const configureMorgan = morgan('dev');

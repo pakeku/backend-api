@@ -1,24 +1,45 @@
 // src/server.ts
-import app from './app';
-import { startDatabase, stopDatabase } from './database/mongo-common';
+import 'dotenv/config';
 import { Server } from 'http';
 
-const PORT: number = parseInt(process.env.PORT || '3001', 10);
+import app from './app';
+import { startDatabase, stopDatabase } from './database/mongo-common';
+
+const PORT: number = parseInt(process.env.PORT ?? '3001', 10);
 const MONGO_URL: string | undefined = process.env.MONGO_URL;
 
 let server: Server | undefined;
 
+function gracefulShutdown(signal: string): void {
+  console.log(`\nReceived ${signal}, shutting down...`);
+  if (server) {
+    server.close(() => {
+      console.log('HTTP server closed');
+      stopDatabase()
+        .then(() => {
+          console.log('Database connection closed');
+          process.exit(0);
+        })
+        .catch((err: unknown) => {
+          console.error('Error during shutdown:', err);
+          process.exit(1);
+        });
+    });
+  } else {
+    process.exit(0);
+  }
+}
+
 async function startServer(): Promise<void> {
   if (!MONGO_URL) {
-    // Gracefully handle missing DB config
-    app.all('*', (req, res) => {
+    app.all('*', (_, res) => {
       res.status(500).send({
         message: 'MONGO_URL not configured. See documentation.',
       });
     });
 
     server = app.listen(PORT, () => {
-      console.log(`Server running without DB on port ${PORT}`);
+      console.log(`Server running without DB on port ${String(PORT)}`);
     });
 
     return;
@@ -28,30 +49,18 @@ async function startServer(): Promise<void> {
     await startDatabase();
 
     server = app.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`);
+      console.log(`Server started on port ${String(PORT)}`);
     });
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Failed to start database:', err);
     process.exit(1);
   }
 }
 
-function gracefulShutdown(signal: string): void {
-  console.log(`\nReceived ${signal}, shutting down...`);
-  if (server) {
-    server.close(async () => {
-      console.log('HTTP server closed');
-      await stopDatabase();
-      console.log('Database connection closed');
-      process.exit(0);
-    });
-  } else {
-    process.exit(0);
-  }
-}
-
 ['SIGINT', 'SIGTERM'].forEach(signal => {
-  process.on(signal, () => gracefulShutdown(signal));
+  process.on(signal, () => {
+    gracefulShutdown(signal);
+  });
 });
 
-startServer();
+void startServer();
