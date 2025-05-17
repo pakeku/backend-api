@@ -7,7 +7,7 @@ interface Store {
   _id?: string;
   name: string;
   addedBy?: string;
-  // add other fields relevant to your store here
+  metadata?: string;
 }
 
 const collectionName = 'stores';
@@ -57,18 +57,18 @@ async function updateStore(id: string, store: Partial<Store>): Promise<Store | n
 
   await database.collection(collectionName).updateOne(
     { _id: new ObjectId(id) },
-    {
-      $set: store,
-    },
+    { $set: store }
   );
 
-  // Return the updated store
-  const result = await database.collection(collectionName).findOne({ _id: new ObjectId(id) });
-  return result ? { 
-    _id: result._id.toString(), 
-    name: result.name, 
-    addedBy: result.addedBy 
-  } as Store : null;
+  const updated = await database.collection(collectionName).findOne({ _id: new ObjectId(id) });
+  if (!updated) return null;
+  return {
+    _id: updated._id?.toString(),
+    name: updated.name,
+    addedBy: updated.addedBy,
+    metadata: updated.metadata,
+  } as Store;
 }
+
 
 export { createStore, getStores, deleteStore, updateStore };
