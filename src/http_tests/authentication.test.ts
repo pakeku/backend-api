@@ -46,4 +46,17 @@ describe('Authentication JWT', () => {
     expect(res.statusCode).toEqual(200);
     expect(userBody).toHaveProperty('email', testUser.email);
   });
+
+  it('should reject request with invalid token', async () => {
+    const invalidToken = 'this.is.an.invalid.token';
+
+    const res: Response = await request(app)
+      .get('/auth/me')
+      .set('Authorization', `Bearer ${invalidToken}`)
+      .expect(401);
+
+    const body = res.body as AuthResponse;
+    expect(body).toHaveProperty('message');
+    expect(typeof body.message).toBe('string');
+  });
 });
