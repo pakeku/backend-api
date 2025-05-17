@@ -37,12 +37,13 @@ describe('Authentication JWT', () => {
     const loginRes: Response = await request(app).post('/auth/login').send(testUser).expect(200);
     const body = loginRes.body as AuthResponse;
 
-    const res = await request(app)
+    const res: Response = await request(app)
       .get('/auth/me')
       .set('Authorization', `Bearer ${body.token}`)
       .expect(200);
 
+    const userBody = res.body as { email: string };
     expect(res.statusCode).toEqual(200);
-    expect(body).toHaveProperty('email', testUser.email);
+    expect(userBody).toHaveProperty('email', testUser.email);
   });
 });
