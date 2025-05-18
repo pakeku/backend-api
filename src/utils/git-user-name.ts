@@ -9,7 +9,6 @@ function getGitUserName(): string {
       const name = execSync('git config --get user.name', { encoding: 'utf8' }).trim();
       return name || 'unknown';
     } catch (err) {
-      console.error('Error getting git user name:', err);
       return 'unknown';
     }
   }
