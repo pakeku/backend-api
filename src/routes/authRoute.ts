@@ -19,7 +19,39 @@ interface User {
   password: string;
 }
 
-// Register endpoint
+// register endpoint
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Email and password are required
+ *       409:
+ *         description: Email already taken
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body as User;
 
@@ -51,6 +83,46 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
 });
 
 // Login endpoint
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Log in an existing user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 token:
+ *                   type: string
+ *       401:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
+ */
+
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body as User;
 
@@ -81,6 +153,30 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 });
 
 // responds with user data
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Get current authenticated user info
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns user email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 email:
+ *                   type: string
+ *       401:
+ *         description: No token provided or unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+
 router.get('/me', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   const token = req.headers.authorization?.split(' ')[1];
 

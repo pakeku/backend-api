@@ -1,16 +1,30 @@
 import swaggerJsdoc, { Options } from 'swagger-jsdoc';
 
-import { name } from '../../package.json';
+import { description, name, version } from '../../package.json';
 
 const options: Options = {
-  apis: ['./src/**/*.ts'], // recursive, includes subfolders like ./src/routes
+  apis: ['./src/**/*.ts'],
   definition: {
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          bearerFormat: 'JWT',
+          scheme: 'bearer',
+          type: 'http',
+        },
+      },
+    },
     info: {
-      description: 'A sample API documentation',
+      description,
       title: name,
-      version: '1.0.0',
+      version,
     },
     openapi: '3.0.0',
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
 };
 
