@@ -20,7 +20,21 @@ You can define your environmental variables in a `.env` file at the root of the 
 | `ALLOWED_METHODS` | ❌ No      | Comma-separated list of allowed HTTP methods for CORS.                                               | `GET,POST,PUT,DELETE`                                                                           |
 | `ALLOWED_HEADERS` | ❌ No      | Comma-separated list of allowed request headers for CORS.                                            | `Content-Type,Authorization`                                                                    |
 | `NODE_ENV`        | ⚠️ Depends | Application environment: `development`, `production`, or `test`. `MONGO_URL` not required in `test`. | `development`                                                                                   |
-| `JWT_SECRET`      | ✅ Yes     | Secret key used for signing/verifying JWTs. Must be secure and private.                              | `Use: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`                 |
+| `JWT_SECRET`      | ⚠️ Depends | Previously used for local user authentication JWTs. Now, user auth is via Auth0. May still be used for other non-user-auth JWT purposes if any exist in the system. Secure and private if used. | `Use: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`                 |
+
+## Authentication
+
+This application uses **Auth0** for handling user authentication. As a result, the previous local authentication endpoints (`/auth/register` and `/auth/login`) have been removed. Users should now authenticate via Auth0's Universal Login page (or a similar Auth0-managed flow), and then use the obtained JWT (Access Token) to access protected API endpoints.
+
+The following environment variables are required for Auth0 integration:
+
+| Variable            | Required | Description                                                                                                | Example                                  |
+| ------------------- | -------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `AUTH0_DOMAIN`      | ✅ Yes   | Your Auth0 application domain. This is the domain where your Auth0 tenant is hosted.                         | `your-tenant.auth0.com`                  |
+| `AUTH0_AUDIENCE`    | ✅ Yes   | Your Auth0 API identifier (Audience). This is the unique identifier for your API registered with Auth0.      | `https://your-api-identifier.com`        |
+| `AUTH0_CLIENT_ID`   | ⚠️ Depends | Your Auth0 application's Client ID. While primarily used by frontends, it might be needed for some backend flows or machine-to-machine auth. The current backend middleware primarily uses `AUTH0_DOMAIN` and `AUTH0_AUDIENCE` for token validation. | `your_auth0_client_id`                   |
+
+Make sure to configure these variables in your `.env` file based on your Auth0 application and API settings. The `JWT_SECRET` is no longer used for primary authentication but might be kept if other parts of the system (not related to user auth) still use local JWTs for other purposes. For user authentication, Auth0's signed JWTs (typically RS256) are now validated.
 
 ## Getting Started
 

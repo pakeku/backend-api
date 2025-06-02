@@ -1,29 +1,24 @@
-import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import { auth } from 'express-oauth2-jwt-bearer';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+// Retrieve Auth0 configuration from environment variables
+const auth0Domain = process.env.AUTH0_DOMAIN;
+const auth0Audience = process.env.AUTH0_AUDIENCE;
 
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET is not defined');
+// Check if the required environment variables are set
+if (!auth0Domain) {
+  throw new Error('AUTH0_DOMAIN environment variable is not set. Please provide the Auth0 Domain.');
 }
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.split(' ')[1];
+if (!auth0Audience) {
+  throw new Error('AUTH0_AUDIENCE environment variable is not set. Please provide the Auth0 API Audience.');
+}
 
-  if (!token) {
-    res.status(401).json({ message: 'No token provided' });
-    return;
-  }
-
-  jwt.verify(token, JWT_SECRET, err => {
-    if (err) {
-      res.status(401).json({ message: 'Invalid or expired token' });
-      return;
-    }
-
-    next();
-  });
-};
+// Configure the Auth0 middleware
+// This middleware will validate JWTs issued by the specified Auth0 domain and intended for the specified audience.
+const authMiddleware = auth({
+  issuerBaseURL: auth0Domain,
+  audience: auth0Audience,
+  tokenSigningAlg: 'RS256', // Specify the algorithm used to sign the JWTs
+});
 
 export default authMiddleware;
